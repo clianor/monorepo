@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "tsc -b",
-    "clean": "rimraf ./dist && rimraf tsconfig.tsbuildinfo"
+    "start": "webpack serve",
+    "build": "webpack --env production",
+    "clean": "rimraf ./dist && rimraf tsconfig.tsbuildinfo",
+    "watch": "tsc -b -w --preserveWatchOutput"
   },
   "dependencies": {
     "@design-system/utils": "^0.0.1",

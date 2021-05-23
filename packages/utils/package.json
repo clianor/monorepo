@@ -8,7 +8,7 @@
   ],
   "private": true,
   "scripts": {
-    "build": "tsc -b",
+    "build": "webpack --env production",
     "clean": "rimraf ./dist && rimraf tsconfig.tsbuildinfo",
     "watch": "tsc -b -w --preserveWatchOutput"
   },
