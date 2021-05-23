@@ -256,3 +256,54 @@ module.exports = {
   }
 }
 ```
+
+# 6. Jest 셋팅
+
+```
+$ yarn add -DW jest ts-jest @types/jest
+```
+
+```js
+// jest.config.base.js
+module.exports = {
+	preset: 'ts-jest',
+	roots: ['<rootDir>/src'],
+	testEnvironment: 'node',
+	collectCoverage: true,
+	coveragePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
+	coverageDirectory: '<rootDir>/coverage/',
+	verbose: true,
+};
+
+```
+
+```js
+// jest.config.js
+const base = require('./jest.config.base');
+
+module.exports = {
+	...base,
+	roots: ['<rootDir>'],
+	projects: ['<rootDir>/packages/ui', '<rootDir>/packages/utils'],
+};
+```
+
+```json
+// package.json
+{
+  ...,
+  "scripts": {
+    ...,
+    "test": "jest",
+    "test:watch": "jest --watch"
+  }
+}
+```
+
+```ts
+// packages/utils/src/index.test.ts
+describe('utils first test', () => {
+	it.todo('todo1');
+	it.todo('todo2');
+});
+```
