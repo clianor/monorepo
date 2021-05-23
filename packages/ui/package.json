@@ -1,0 +1,13 @@
+{
+  "name": "@design-system/ui",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf ./dist && rimraf tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@design-system/utils": "^0.0.1",
+    "rimraf": "^3.0.2"
+  }
+}
