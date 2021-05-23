@@ -225,3 +225,34 @@ module.exports = function (env, argv) {
   ...,
 }
 ```
+
+# 5. ESLint 설정
+
+```
+$ yarn add -D -W eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-prettier prettier
+```
+
+```js
+// .eslintrc.js
+module.exports = {
+  root: true,
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+  ],
+};
+```
+
+```json
+// package.json
+{
+  "scripts": {
+    ...,
+    "lint": "eslint ./packages --ext .ts,.tsx",
+    "lint:fix": "eslint ./packages --ext .ts,.tsx --fix"
+  }
+}
+```
