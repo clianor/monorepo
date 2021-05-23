@@ -186,75 +186,11 @@ $ yarn lerna add rimraf --scope=@design-system/utils --scope=@design-system/ui
 # 4. 웹팩 설정
 
 ```
-$ yarn add -DW html-webpack-plugin webpack webpack-cli webpack-dev-server ts-loader
-```
-
-```html
-// packages/ui/src/index.html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
-    <title>UI</title>
-  </head>
-
-  <body>
-    <div id="result"></div>
-  </body>
-</html>
+$ yarn add -DW webpack webpack-cli ts-loader
 ```
 
 ```js
 // packages/ui/webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-
-module.exports = function (env, argv) {
-  return {
-    mode: env.production ? "production" : "development",
-    devtool: env.production ? "source-map" : "eval",
-    devServer: {
-      open: true,
-      historyApiFallback: true,
-    },
-    entry: {
-      index: "./src/index.ts",
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(ts|tsx)?$/,
-          use: "ts-loader",
-          exclude: /node_modules/,
-        },
-      ],
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: "./src/index.html",
-      }),
-    ],
-  };
-};
-```
-
-```json
-// packages/ui/package.json
-{
-  ...,
-  "scripts": {
-    "start": "webpack serve",
-    "build": "webpack --env production",
-    "clean": "rimraf ./dist && rimraf tsconfig.tsbuildinfo",
-    "watch": "tsc -b -w --preserveWatchOutput",
-  },
-  ...,
-}
-```
-
-```js
 // packages/utils/webpack.config.js
 module.exports = function (env, argv) {
   return {
@@ -277,6 +213,7 @@ module.exports = function (env, argv) {
 ```
 
 ```json
+// packages/ui/package.json
 // packages/utils/package.json
 {
   ...,

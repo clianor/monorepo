@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "webpack serve",
     "build": "webpack --env production",
     "clean": "rimraf ./dist && rimraf tsconfig.tsbuildinfo",
     "watch": "tsc -b -w --preserveWatchOutput"
