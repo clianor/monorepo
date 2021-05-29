@@ -10,13 +10,18 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "dependencies": {
+    "react": "^17.0.2"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.23",
+    "@types/react": "^17.0.8",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
     "husky": "^6.0.0",
     "jest": "^26.6.3",
     "lerna": "^4.0.0",

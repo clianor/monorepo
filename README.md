@@ -43,6 +43,7 @@ $ yarn add typescript -DW
     "sourceMap": true,
     "strict": true,
     "skipLibCheck": true,
+    "jsx": "react",
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -88,7 +89,7 @@ $ yarn add typescript -DW
 ```
 
 ```ts
-// packages/utils/src/index.ts
+// packages/utils/src/index.tsx
 export function roll(roll: string): string {
   return `I rolled a dice: ${roll}. Outcome grim`;
 }
@@ -131,7 +132,7 @@ export function roll(roll: string): string {
 ```
 
 ```ts
-// packages/ui/src/index.ts
+// packages/ui/src/index.tsx
 import { roll } from "@design-system/utils";
 
 console.log(roll("1d20"));
@@ -197,7 +198,7 @@ module.exports = function (env, argv) {
     mode: env.production ? "production" : "development",
     devtool: env.production ? "source-map" : "eval",
     entry: {
-      index: "./src/index.ts",
+      index: "./src/index.tsx",
     },
     module: {
       rules: [
@@ -324,7 +325,7 @@ describe('utils first test', () => {
 });
 ```
 
-# 7. Husky and Lint-Staged
+# 7. Husky and Lint-Staged 셋팅
 
 ```shell
 $ yarn add -DW husky lint-staged
@@ -343,5 +344,44 @@ module.exports = {
 // lint-staged.config.js
 module.exports = {
   '*.{ts,tsx}': ['eslint --fix'],
+};
+```
+
+# 8. React 셋팅
+
+```shell
+$ yarn add -W react
+$ yarn add -DW @types/react eslint-plugin-react
+```
+
+```js
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
+};
+```
+
+```tsx
+import React from 'react';
+import {roll} from '@design-system/utils';
+
+export interface MonorepoButtonProps {
+  label: string;
+  roll?: true;
+}
+
+export const MonorepoButton = (props: MonorepoButtonProps): JSX.Element => {
+  return (
+    <button>
+      {props.label} {props.roll ? roll('1d20') : ''}
+    </button>
+  );
 };
 ```

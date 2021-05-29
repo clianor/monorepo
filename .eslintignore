@@ -3,10 +3,10 @@ dist
 build
 coverage
 
+README.md
 .eslintrc.js
 husky.config.js
 jest.config.js
 jest.config.base.js
 lint-staged.config.js
-
 webpack.config.js
