@@ -1,6 +1,6 @@
 module.exports = {
-  tabWidth: 4,
-  useTabs: true,
+  tabWidth: 2,
+  useTabs: false,
   semi: true,
   singleQuote: true,
   jsxSingleQuote: true, // JSX에서 singleQuote or doubleQuote

@@ -1,6 +1,6 @@
 # 1. 모노레포 설정
 
-```
+```shell
 $ yarn init -y
 $ yarn add lerna -DW
 ```
@@ -15,8 +15,8 @@ $ yarn add lerna -DW
   "private": true,
   "workspaces": ["packages/*"]
 }
-
 ```
+
 ```json
 // lerna.json
 {
@@ -29,7 +29,7 @@ $ yarn add lerna -DW
 
 # 2. 타입스크립트 설정
 
-```
+```shell
 $ yarn add typescript -DW
 ```
 
@@ -137,7 +137,7 @@ import { roll } from "@design-system/utils";
 console.log(roll("1d20"));
 ```
 
-```
+```shell
 // 의존성 설치하기
 $ yarn lerna bootstrap
 // 모든 패키지에서 빌드를 실행함 ( --stream 옵션은 prefix를 붙인 결과를 보여줌 )
@@ -185,7 +185,7 @@ $ yarn lerna add rimraf --scope=@design-system/utils --scope=@design-system/ui
 
 # 4. 웹팩 설정
 
-```
+```shell
 $ yarn add -DW webpack webpack-cli ts-loader
 ```
 
@@ -228,7 +228,7 @@ module.exports = function (env, argv) {
 
 # 5. ESLint 설정
 
-```
+```shell
 $ yarn add -D -W eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-prettier prettier
 ```
 
@@ -246,6 +246,22 @@ module.exports = {
 };
 ```
 
+```js
+// .prettierrc.js
+module.exports = {
+  tabWidth: 2,
+  useTabs: false,
+  semi: true,
+  singleQuote: true,
+  jsxSingleQuote: true, // JSX에서 singleQuote or doubleQuote
+  endOfLine: 'lf',
+  trailingComma: 'all', // comma 항상 붙이기
+  bracketSpacing: false, // 객체리터럴에서 { } 사이에 공백을 넣을 것인지
+  jsxBracketSameLine: false, // 여러줄의 JSX 요소가 있을때, > 를 마지막 줄의 끝부분에서 닫을 것인지
+  arrowParens: 'always', // (x) => x : always | x => x : avoid
+};
+```
+
 ```json
 // package.json
 {
@@ -259,7 +275,7 @@ module.exports = {
 
 # 6. Jest 셋팅
 
-```
+```shell
 $ yarn add -DW jest ts-jest @types/jest
 ```
 
@@ -303,7 +319,29 @@ module.exports = {
 ```ts
 // packages/utils/src/index.test.ts
 describe('utils first test', () => {
-	it.todo('todo1');
+    it.todo('todo1');
 	it.todo('todo2');
 });
+```
+
+# 7. Husky and Lint-Staged
+
+```shell
+$ yarn add -DW husky lint-staged
+```
+
+```js
+module.exports = {
+  hooks: {
+    'pre-commit': 'lint-staged',
+    'pre-push': 'yarn test',
+  },
+};
+```
+
+```js
+// lint-staged.config.js
+module.exports = {
+  '*.{ts,tsx}': ['eslint --fix'],
+};
 ```
