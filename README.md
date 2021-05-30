@@ -347,11 +347,11 @@ module.exports = {
 };
 ```
 
-# 8. React 셋팅
+# 8. React & esbuild 셋팅
 
 ```shell
-$ yarn add -W react
-$ yarn add -DW @types/react eslint-plugin-react
+$ yarn add -W react react-dom 
+$ yarn add -DW @types/react eslint-plugin-react esbuild-loader
 ```
 
 ```js
@@ -365,6 +365,102 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],
+};
+```
+
+```js
+// packages/ui/webpack.config.js
+const path = require('path');
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
+
+module.exports = function (env, argv) {
+  return {
+    mode: env.production ? 'production' : 'development',
+    devtool: env.production ? 'source-map' : 'eval',
+    entry: {
+      index: './src/index.tsx',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(ts|tsx)?$/,
+          loader: 'esbuild-loader',
+          options: {
+            loader: 'tsx',
+            target: 'es2015',
+            tsconfigRaw: require('./tsconfig.json'),
+          },
+        },
+      ],
+    },
+    optimization: {
+      minimize: env.production ? true : false,
+      minimizer: [
+        new ESBuildMinifyPlugin({
+          target: 'es2015',
+        }),
+      ],
+    },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+      alias: {
+        '@design-system/utils': path.resolve(__dirname, '../utils/src'),
+      },
+    },
+    stats: {
+      assetsSort: 'size',
+      children: false,
+      chunksSort: 'size',
+      excludeAssets: /.js.map/,
+      modules: false,
+    },
+  };
+};
+```
+
+```js
+// packages/utils/webpack.config.js
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
+
+module.exports = function (env, argv) {
+  return {
+    mode: env.production ? 'production' : 'development',
+    devtool: env.production ? 'source-map' : 'eval',
+    entry: {
+      index: './src/index.ts',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(ts|tsx)?$/,
+          loader: 'esbuild-loader',
+          options: {
+            loader: 'tsx',
+            target: 'es2015',
+            tsconfigRaw: require('./tsconfig.json'),
+          },
+        },
+      ],
+    },
+    optimization: {
+      minimize: env.production ? true : false,
+      minimizer: [
+        new ESBuildMinifyPlugin({
+          target: 'es2015',
+        }),
+      ],
+    },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+    },
+    stats: {
+      assetsSort: 'size',
+      children: false,
+      chunksSort: 'size',
+      excludeAssets: /.js.map/,
+      modules: false,
+    },
+  };
 };
 ```
 
@@ -384,4 +480,127 @@ export const MonorepoButton = (props: MonorepoButtonProps): JSX.Element => {
     </button>
   );
 };
+```
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es5", "es2015", "es2016", "es2017", "DOM"],
+    "jsx": "react",
+    "baseUrl": "./",
+    "paths": {
+      "@design-system/ui": ["./packages/ui/src"],
+      "@design-system/ui/*": ["./packages/ui/src/*"],
+      "@design-system/utils": ["./packages/utils/src"],
+      "@design-system/utils/*": ["./packages/utils/src/*"]
+    },
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "composite": true
+  },
+  "exclude": ["**/node_modules", "**/.*/", "**/build"]
+```
+
+```json
+// packages/ui/tsconfig.json
+{
+  "extends": "../../tsconfig.json",
+  "include": ["src/**/*"],
+  "references": [
+    { "path":  "../utils" }
+  ]
+}
+```
+
+```json
+// packages/utils/tsconfig.json
+{
+  "extends": "../../tsconfig.json",
+  "include": ["src/**/*"]
+}
+```
+
+#9. storybook 셋팅
+
+```shell
+$ npx sb init
+$ yarn add -DW storybook-addon-turbo-build
+```
+
+생성된 stories 내부 파일 및 폴더 전부 제거
+
+```js
+// .storybook/main.js
+const path = require('path');
+
+module.exports = {
+  stories: [
+    '../stories/**/*.stories.mdx',
+    '../stories/**/*.stories.@(js|jsx|ts|tsx)',
+  ],
+  addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    {
+      name: 'storybook-addon-turbo-build',
+      options: {
+        optimizationLevel: 2,
+      },
+    },
+  ],
+  webpackFinal: async (config) => {
+    config.module.rules.push({
+      test: /\.(ts|tsx)?$/,
+      loader: 'esbuild-loader',
+      options: {
+        loader: 'tsx',
+        target: 'es2015',
+        tsconfigRaw: require('../tsconfig.json'),
+      },
+    });
+
+    config.resolve.extensions.push('.ts', '.tsx');
+
+    Object.assign(config.resolve.alias, {
+      '@design-system/ui': path.resolve(__dirname, '../packages/ui/src'),
+      '@design-system/utils': path.resolve(__dirname, '../packages/utils/src'),
+    });
+
+    return config;
+  },
+};
+```
+
+```tsx
+// stories/MonorepoButton.stories.tsx
+import React from 'react';
+import { Story, Meta } from '@storybook/react';
+import { MonorepoButton, MonorepoButtonProps } from '@design-system/ui';
+
+export default {
+  title: 'Example/MonorepoButton',
+  component: MonorepoButton,
+} as Meta;
+
+const Template: Story<MonorepoButtonProps> = (args) => (
+  <MonorepoButton {...args} />
+);
+
+export const Default = Template.bind({});
+Default.args = {
+  label: 'label ->',
+  roll: true,
+};
+```
+
+```shell
+$ yarn run storybook # 기존에 작성한 코드들을 이용한 결과물을 확인 가능
 ```

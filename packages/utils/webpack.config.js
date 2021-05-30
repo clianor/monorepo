@@ -1,3 +1,5 @@
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
+
 module.exports = function (env, argv) {
   return {
     mode: env.production ? 'production' : 'development',
@@ -9,10 +11,32 @@ module.exports = function (env, argv) {
       rules: [
         {
           test: /\.(ts|tsx)?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
+          loader: 'esbuild-loader',
+          options: {
+            loader: 'tsx',
+            target: 'es2015',
+            tsconfigRaw: require('./tsconfig.json'),
+          },
         },
       ],
+    },
+    optimization: {
+      minimize: env.production ? true : false,
+      minimizer: [
+        new ESBuildMinifyPlugin({
+          target: 'es2015',
+        }),
+      ],
+    },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+    },
+    stats: {
+      assetsSort: 'size',
+      children: false,
+      chunksSort: 'size',
+      excludeAssets: /.js.map/,
+      modules: false,
     },
   };
 };

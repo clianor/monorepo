@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --env production",
+    "prebuild": "yarn run clean",
     "clean": "rimraf ./dist && rimraf tsconfig.tsbuildinfo",
     "watch": "tsc -b -w --preserveWatchOutput"
   },

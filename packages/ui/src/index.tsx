@@ -1,5 +1,5 @@
 import React from 'react';
-import {roll} from '@design-system/utils';
+import { roll } from '@design-system/utils';
 
 export interface MonorepoButtonProps {
   label: string;
@@ -13,3 +13,5 @@ export const MonorepoButton = (props: MonorepoButtonProps): JSX.Element => {
     </button>
   );
 };
+
+MonorepoButton.displayName = 'MonorepoButton';
