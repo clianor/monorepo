@@ -6,7 +6,9 @@
     "build": "webpack --env production",
     "prebuild": "yarn run clean",
     "clean": "rimraf ./dist && rimraf tsconfig.tsbuildinfo",
-    "watch": "tsc -b -w --preserveWatchOutput"
+    "watch": "tsc -b -w --preserveWatchOutput",
+    "preci": "rimraf node_modules",
+    "ci": "yarn install --frozen-lockfile"
   },
   "dependencies": {
     "rimraf": "^3.0.2"

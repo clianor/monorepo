@@ -1,5 +1,6 @@
 const path = require('path');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = function (env, argv) {
   return {
@@ -19,6 +20,14 @@ module.exports = function (env, argv) {
             tsconfigRaw: require('./tsconfig.json'),
           },
         },
+        {
+          test: /\.css$/,
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        },
+        {
+          test: /\.scss$/,
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        },
       ],
     },
     optimization: {
@@ -26,6 +35,9 @@ module.exports = function (env, argv) {
       minimizer: [
         new ESBuildMinifyPlugin({
           target: 'es2015',
+        }),
+        new MiniCssExtractPlugin({
+          filename: 'tailwind.css',
         }),
       ],
     },
