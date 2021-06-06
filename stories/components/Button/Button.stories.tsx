@@ -2,6 +2,7 @@ import React from 'react';
 import { Story, Meta } from '@storybook/react';
 import { Button, ButtonProps } from '@design-system/ui';
 import SizeTemplate from './ButtonSize';
+import LoadingTemplate from './ButtonLoading';
 
 export default {
   title: 'Components/Button',
@@ -16,3 +17,4 @@ Default.args = {
 };
 
 export const Size = SizeTemplate.bind({});
+export const Loading = LoadingTemplate.bind({});
