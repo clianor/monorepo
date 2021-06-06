@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 
-import Colors from '../components/Colors';
+import Colors from '../Colors';
 
 export default {
   title: 'Core/Colors',
