@@ -23,7 +23,6 @@ const Button: React.FC<ButtonProps> = ({ label, size, disabled, loading }) => {
 };
 
 Button.defaultProps = {
-  label: 'Button',
   size: 'base',
   disabled: false,
 };
