@@ -14,9 +14,19 @@ const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  label: 'button',
+  label: 'Button',
 };
 
 export const Size = SizeTemplate.bind({});
+
 export const Loading = LoadingTemplate.bind({});
+Loading.args = {
+  label: 'Loading...',
+  loading: true,
+};
+
 export const Disabled = DisabledTemplate.bind({});
+Disabled.args = {
+  label: 'Disabled...',
+  disabled: true,
+};

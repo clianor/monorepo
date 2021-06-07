@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button } from '@design-system/ui';
+import { Story } from '@storybook/react';
+import { Button, ButtonProps } from '@design-system/ui';
 
-const SizeTemplate: React.FC = () => {
+const SizeTemplate: Story<ButtonProps> = (args) => {
   return (
     <div className='space-x-2'>
       <Button label='Small' size='sm' />
