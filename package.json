@@ -15,7 +15,6 @@
     "build-storybook": "build-storybook",
     "predeploy-storybook": "yarn run build-storybook",
     "deploy-storybook": "gh-pages -d storybook-static",
-    "preci": "rimraf node_modules",
     "ci": "yarn install --frozen-lockfile && lerna run ci --parallel"
   },
   "dependencies": {
