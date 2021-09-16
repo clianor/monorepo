@@ -21,23 +21,34 @@ module.exports = function (env, argv) {
           },
         },
         {
-          test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        },
-        {
-          test: /\.scss$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+          test: /\.(sa|sc|c)ss$/i,
+          exclude: /node_modules/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            {
+              loader: "sass-loader",
+              options: {
+                // Prefer `dart-sass`
+                implementation: require("sass"),
+              },
+            }
+          ],
         },
       ],
     },
+    plugins: [
+      new MiniCssExtractPlugin({
+        linkType: false,
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[id].[contenthash].css',
+      }),
+    ],
     optimization: {
       minimize: env.production ? true : false,
       minimizer: [
         new ESBuildMinifyPlugin({
           target: 'es2015',
-        }),
-        new MiniCssExtractPlugin({
-          filename: 'tailwind.css',
         }),
       ],
     },

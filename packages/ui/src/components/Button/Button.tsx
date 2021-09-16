@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { Loading } from '../Loading';
+import './styles/index.scss';
 
 export type ButtonProps = {
   label: string;
@@ -12,7 +12,7 @@ export type ButtonProps = {
 const Button: React.FC<ButtonProps> = ({ label, size, disabled, loading }) => {
   return (
     <button
-      className={`text-${size} text-white bg-green-500 px-5 py-3 font-medium hover:bg-green-600 disabled:bg-green-200 disabled:cursor-not-allowed`}
+      className={`es-button text-${size} text-white bg-green-500 px-5 py-3 font-medium hover:bg-green-600 disabled:bg-green-200 disabled:cursor-not-allowed`}
       disabled={disabled}>
       <span className='flex items-center gap-2'>
         {loading && <Loading />}
